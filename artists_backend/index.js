@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
+
 const app = express();
 
 
@@ -57,7 +58,8 @@ app.post('/transaction_add', async (req, res) => {
   });
   
   const port = process.env.PORT || 4000  
+  const HOST = '0.0.0.0'; // Bind to all network interfaces
 
-  app.listen(port, ()=>{
-    console.log(`listening at port number ${port}`)
+  app.listen(port, HOST, ()=>{
+    console.log(`listening at port number ${HOST}:${port}`)
   })  
