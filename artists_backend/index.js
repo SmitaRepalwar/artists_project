@@ -46,7 +46,7 @@ app.post('/transaction_add', async (req, res) => {
       date,
       running_balance
     }
-  
+
     const query = 'INSERT INTO transactions SET ?';
     db.query(query, data, (err, result) => {
       if (err) {
@@ -56,8 +56,8 @@ app.post('/transaction_add', async (req, res) => {
     });
   });
   
-  const port = process.env.PORT
+  const port = process.env.PORT || 4000  
 
   app.listen(port, ()=>{
     console.log(`listening at port number ${port}`)
-  })
+  })  
