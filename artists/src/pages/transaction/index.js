@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import {useNavigate} from "react-router-dom"
 import './index.css';
 import axios from 'axios';
 
 const Transaction = () => {
+
+  const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
     description: '',
     type: 'debit',
@@ -31,7 +35,7 @@ const Transaction = () => {
        id
     }
    
-    axios.post('http://localhost:10000/add', data)
+    axios.post('http://localhost:4000/add', data)
     .then(function (response) {
       console.log(response);
     })
@@ -44,6 +48,8 @@ const Transaction = () => {
       type: '',
       amount: 0,
     });
+    
+    navigate("/")
   };
 
   return (

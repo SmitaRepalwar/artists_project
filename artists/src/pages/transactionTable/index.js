@@ -1,14 +1,17 @@
+import {useNavigate} from "react-router-dom"
 import {useState, useEffect} from "react";
 import axios from 'axios';
 import "./index.css"
 
 
 export const TransactionTable = () =>{
+
+    const navigate = useNavigate()
  
     const [data, setData] = useState([])
 
     useEffect(()=>{
-        axios.get('http://localhost:10000')
+        axios.get('http://localhost:4000')
         .then(function (response) {
             // handle success
             console.log(response);
@@ -20,9 +23,17 @@ export const TransactionTable = () =>{
         })
     }, [])
 
+
+    const onAddClick = () =>{
+      navigate('/add')
+    }
+
     
     return(
-       <div className='table-con'> 
+       <div className='table-con'>
+        <div className="button-con">
+        <button onClick={onAddClick}>Add transaction</button>
+        </div>
         <table className="finance-table">
         <thead>
           <tr>

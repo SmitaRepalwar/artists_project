@@ -33,7 +33,7 @@ initDB().then(() => {
   
   app.get('/', async (req, res) => {
     try {
-      const query = 'SELECT * FROM transactions';
+      const query = 'SELECT * FROM transactions ORDER BY id DESC';
       const [results] = await db.query(query);
       res.json(results);
     } catch (err) {
@@ -57,7 +57,7 @@ initDB().then(() => {
       let running_balance;
       switch (type) {
         case 'credit':
-          running_balance = balance + amount;
+          running_balance = parseInt(balance) + parseInt(amount);
           break;
         case 'debit':
           running_balance = balance - amount;

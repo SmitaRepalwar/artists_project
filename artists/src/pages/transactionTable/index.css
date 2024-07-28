@@ -3,13 +3,21 @@
     width: 95vw;
     padding: 10px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+.button-con{
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
 .finance-table {
-    width: 90%;
-    height: 90%;
+    width: 80%;
+    height: 80%;
     border-collapse: collapse;
   }
   
