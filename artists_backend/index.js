@@ -23,19 +23,18 @@ async function initDB() {
     console.log('Connected to the database as id ' + db.threadId);
   } catch (err) {
     console.error('Error connecting to the database:', err.stack);
+    throw err;
   }
 }
-
-// Initialize the database connection
-initDB().catch(err => {
-  console.error('Failed to initialize database:', err);
-  process.exit(1); // Exit the application if the database connection fails
-});
 
 // Middleware to ensure db is initialized before handling requests
 app.use(async (req, res, next) => {
   if (!db) {
-    await initDB();
+    try {
+      await initDB();
+    } catch (err) {
+      return res.status(500).json({ error: 'Failed to connect to the database' });
+    }
   }
   next();
 });
