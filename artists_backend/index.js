@@ -6,8 +6,6 @@ require("dotenv").config();
 
 const app = express();
 
-
-
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -28,8 +26,19 @@ async function initDB() {
   }
 }
 
-// Call the function to initialize database connection
-initDB();
+// Initialize the database connection
+initDB().catch(err => {
+  console.error('Failed to initialize database:', err);
+  process.exit(1); // Exit the application if the database connection fails
+});
+
+// Middleware to ensure db is initialized before handling requests
+app.use(async (req, res, next) => {
+  if (!db) {
+    await initDB();
+  }
+  next();
+});
 
 app.get('/', async (req, res) => {
   try {
@@ -46,20 +55,21 @@ app.post('/add', async (req, res) => {
   try {
     const { id, type, amount, description, date } = req.body;
 
+    // Convert the date to MySQL-compatible format
+    const formattedDate = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
+
     const getQuery = 'SELECT running_balance FROM transactions ORDER BY id DESC LIMIT 1';
     const [results] = await db.query(getQuery);
 
     let balance = results.length > 0 ? results[0].running_balance : 0;
 
-    const formattedDate = new Date(date).toISOString().slice(0, 19).replace('T', ' ');
-
     let running_balance;
     switch (type) {
       case 'credit':
-        running_balance = parseInt(balance) + parseInt(amount);
+        running_balance = balance + amount;
         break;
       case 'debit':
-        running_balance = parseInt(balance) - parseInt(amount);
+        running_balance = balance - amount;
         break;
       default:
         return res.status(400).json({ error: 'Invalid transaction type' });
