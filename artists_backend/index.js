@@ -78,7 +78,7 @@ app.post('/add', async (req, res) => {
 });
 
 const port = process.env.PORT || 4000;
-const HOST = '0.0.0.0'; // Bind to all network interfaces
+const HOST = '127.0.0.1'; // Bind to all network interfaces
 
 app.listen(port, HOST, () => {
   console.log(`Listening at port number ${HOST}:${port}`);
